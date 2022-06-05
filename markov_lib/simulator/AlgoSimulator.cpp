@@ -1,11 +1,15 @@
-#include "Markov.hpp"
+#include "AlgoSimulator.h"
+
+#include <iostream>
+#include <unordered_set>
 
 
-void RunAlgoritm(MarkovList ML, 
-                    std::vector<command> Commands, 
-                    bool show_all = false, 
-                    bool simple_db = false, 
-                    bool full_db = false)
+void RunAlgoritm(
+    MarkovList ML,
+    const std::vector<Command>& commands,
+    bool show_all = false,
+    bool simple_db = false,
+    bool full_db = false)
 {
     int cntr = 0, res;
  
@@ -21,7 +25,7 @@ void RunAlgoritm(MarkovList ML,
             goto end;
         }
 
-        for(auto com:Commands)
+        for(const auto& com : commands)
         {
             ++cntr;
 

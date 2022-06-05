@@ -1,6 +1,5 @@
-#include "file.hpp"
+#include "file.h"
 
-using namespace std;
 
 bool readline(FILE *file, char * ret)
 {
@@ -24,10 +23,10 @@ bool readline(FILE *file, char * ret)
     return  res;
 }
 
-vector<char *> read_file(char *filename)
+std::vector<char *> read_file(char *filename)
 {
     FILE *file;
-    vector<char *> ret;
+    std::vector<char *> ret;
     file = fopen(filename, "r");
     if(file == NULL)
     {    printf("Error while opening file \n"); return ret;}
@@ -46,7 +45,7 @@ vector<char *> read_file(char *filename)
     return ret;
 }
 
-char * ReadFileToOne(char *filename)
+char * ReadFileToOne(const char *filename)
 {
     FILE *file;
     char *ret = NULL, *cp, c;
@@ -69,7 +68,7 @@ char * ReadFileToOne(char *filename)
 
 }
 
-void WriteToFile(char* data, char* filename)
+void WriteToFile(char* data, const char* filename)
 {
     FILE *file; 
 

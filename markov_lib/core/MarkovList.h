@@ -1,17 +1,15 @@
 #pragma once
+
 #include <string>
-#include <string.h>
-#include <iostream>
 
-
-struct command
+struct Command
 {
     std::string first;
     std::string second;
     bool is_end;
     int n;
 
-    command(std::string, std::string, int , bool); 
+    Command(std::string, std::string, int , bool);
     
 };
 
@@ -42,7 +40,7 @@ class MarkovList
     void AddAndSet(MarkovPtr, std::string);
     void Replace(MarkovPtr, std::string, std::string);
 
-    public:
+public:
     MarkovList(char *);
     MarkovList(std::string);
 

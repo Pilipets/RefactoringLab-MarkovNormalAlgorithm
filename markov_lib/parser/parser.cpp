@@ -1,6 +1,10 @@
-#include "recognize.hpp"
-#include<iostream>
-using namespace std;
+#include "parser.h"
+
+#include <algorithm>
+#include <cstring>
+
+#include "../utils/file.h"
+
 void clear_spaces_and_lines(char **ch)
 {
     while (**ch == ' ' || **ch == '\n')
@@ -101,7 +105,7 @@ int extract_alphabet(char **ch, char * alp)
     return extract_mas(ch, alp);
 }
 
-int one_command(char **ch,  std::vector<command> &V, int n)
+int one_command(char **ch,  std::vector<Command> &V, int n)
 {
     std::string s1 = "", s2 = "";
     bool is_end = false;
@@ -141,7 +145,7 @@ int one_command(char **ch,  std::vector<command> &V, int n)
         (*ch)++;
     }
 
-    command cm(s1, s2, n, is_end);
+    Command cm(s1, s2, n, is_end);
 
     V.push_back(cm);
 
@@ -152,7 +156,7 @@ int one_command(char **ch,  std::vector<command> &V, int n)
     return (int) (**ch == '\0');
 }
 
-int extract(char **ch, char *alphabet, char *tuple, vector<command> &V)
+int extract(char **ch, char *alphabet, char *tuple, std::vector<Command> &V)
 {
 /*
 T = {} // Tuple to work with

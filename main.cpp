@@ -1,35 +1,32 @@
-#include "lib/recognize.hpp"
-#include "lib/classes.hpp"
-#include "lib/file.hpp"
-#include "lib/Markov.hpp"
+#include "markov_lib/MarkovAlgo.h"
 
-#include <iostream>
-using namespace std;
 
-char ALGO_FILENAME[] = "alg.txt";
-char INPUT_FILENAME[] = "inp.txt";
-char OUTPUT_FILENAME[] = "out.txt";
-
-bool SAVE_RES = false;
+struct AlgoConfig {
+    std::string rules_fp;
+    std::string input_fp;
+    std::string output_fp;
+};
 
 
 int main()
 {
     char Alphabet[100], Tuple[100], *filedata, *input_data;
 
-    filedata = ReadFileToOne(ALGO_FILENAME);
-    input_data = ReadFileToOne(INPUT_FILENAME);
+    auto config = AlgoConfig{"data/alg.txt", "data/inp.txt", "data/out.txt"};
+
+    filedata = ReadFileToOne(config.rules_fp.c_str());
+    input_data = ReadFileToOne(config.input_fp.c_str());
     char **ch = &filedata;
     
-    vector<command> Commands;
-    extract(&filedata, Alphabet, Tuple, Commands);    
+    std::vector<Command> commands;
+    extract(&filedata, Alphabet, Tuple, commands);
 
     MarkovList ML(input_data);
     ML.show();
 
-    RunAlgoritm(ML, Commands, true, false, false);
-    if (SAVE_RES);
-        //WriteToFile(ML.data_char(), OUTPUT_FILENAME);
+    RunAlgoritm(ML, commands, true, false, false);
+    if (!config.output_fp.empty())
+        WriteToFile(ML.data_char(), config.output_fp.c_str());
 
    return 0;
 }

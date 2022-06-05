@@ -1,9 +1,12 @@
-#include "classes.hpp"
+#include "MarkovList.h"
 
-command::command(std::string s1, std::string s2, int num,  bool c_end)
+#include <iostream>
+#include <cstring>
+
+Command::Command(std::string s1, std::string s2, int num,  bool c_end)
 {
-    first = s1;
-    second = s2;
+    first = std::move(s1);
+    second = std::move(s2);
     is_end = c_end;
     n = num;
     
@@ -38,7 +41,7 @@ void MarkovList::CreateNewParts(int add_size)
 
     ptr = FIRST; // ????????????????????? 
 
-    for(register int i = 0; i < add_size; i++)
+    for(int i = 0; i < add_size; i++)
     {
         new_part =  new MarkovPart;
         
@@ -58,7 +61,7 @@ void MarkovList::CreateNewParts(int add_size)
 MarkovList::MarkovList(char * s)
 {
 
-    CreateNewParts(strlen(s));
+    CreateNewParts(std::strlen(s));
     MarkovPtr ptr = FIRST;
 
     while(ptr->next)
@@ -76,7 +79,7 @@ MarkovList::MarkovList(std::string s)
     CreateNewParts(sz);
     MarkovPtr ptr = FIRST;
 
-    for(register int i = 0; i < sz; ++i)
+    for(int i = 0; i < sz; ++i)
     {
         ptr->val = s[i];
         ptr = ptr->next;
@@ -137,7 +140,7 @@ void MarkovList::AddParts(MarkovPtr beg, int sz)
     MarkovPtr cur, end;
     end = beg->next;
     
-    for(register int i = 0; i < sz; ++i)
+    for(int i = 0; i < sz; ++i)
     {
         cur = new MarkovPart;
         beg->next = cur;
@@ -152,7 +155,7 @@ void MarkovList::DeleteParts(MarkovPtr beg, int sz)
     //Deltes part starting from beg (beg not included)
     MarkovPtr ptr;
     ptr = beg->next;
-    for(register int i = 0; i < sz; ++i)
+    for(int i = 0; i < sz; ++i)
     {
         if (!beg->next)
             {//Error
