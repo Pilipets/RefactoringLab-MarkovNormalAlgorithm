@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <list>
+
 
 struct Command
 {
@@ -13,16 +15,11 @@ struct Command
     
 };
 
-typedef struct MarkovPart
-{
-    char val;
-    MarkovPart *next = nullptr;
-} *MarkovPtr;
 
 class MarkovList
 {
-    int _size = 0;
-    MarkovPtr FIRST = nullptr;
+    std::list<char> list;
+    using MarkovPtr = decltype(list.begin());
 
     //functions
     MarkovPtr GiveLast();

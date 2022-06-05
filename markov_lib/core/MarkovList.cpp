@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <cstring>
+#include <cassert>
+#include <iterator>
 
 Command::Command(std::string s1, std::string s2, int num,  bool c_end)
 {
@@ -9,83 +11,43 @@ Command::Command(std::string s1, std::string s2, int num,  bool c_end)
     second = std::move(s2);
     is_end = c_end;
     n = num;
-    
 }
 
-MarkovPtr MarkovList::GiveLast()
+MarkovList::MarkovPtr MarkovList::GiveLast()
 {
-    MarkovPtr ptr = FIRST;
-
-    while (ptr->next)
-        ptr = ptr->next;
-    return ptr;
+    return std::prev(list.end());
 }
 
 void MarkovList::CreateNewParts(int add_size)
 {
     if (add_size <= 0)
         return;
-   
-    
-    MarkovPtr ptr, new_part;        
-    if(_size == 0)
-    {
-        ptr = new MarkovPart;
-        FIRST = ptr;
-        
-        add_size--;
-      
-    }
-    else
-        {ptr = GiveLast();}
 
-    ptr = FIRST; // ????????????????????? 
-
-    for(int i = 0; i < add_size; i++)
-    {
-        new_part =  new MarkovPart;
-        
-        ptr->next = new_part;
-        
-        
-        ptr = new_part;
-
-    
-            
-    }
-    
-    
-
+    list.resize(add_size);
 }
 
 MarkovList::MarkovList(char * s)
 {
-
     CreateNewParts(std::strlen(s));
-    MarkovPtr ptr = FIRST;
+    MarkovPtr ptr = list.begin();
 
-    while(ptr->next)
+    while(std::next(ptr) != list.end())
     {
-        ptr->val = *s;
-        ptr = ptr->next;
-        s ++;
+        *ptr++ = *s++;
     }
+}
 
-}   
 MarkovList::MarkovList(std::string s)
 {
-
     int sz = s.size();
     CreateNewParts(sz);
-    MarkovPtr ptr = FIRST;
+    MarkovPtr ptr = list.begin();
 
     for(int i = 0; i < sz; ++i)
     {
-        ptr->val = s[i];
-        ptr = ptr->next;
-        
+        *ptr = s[i];
+        ptr++;
     }
-
 }   
 
 bool MarkovList::IsIt(MarkovPtr cur, std::string s, int pos)
@@ -93,93 +55,62 @@ bool MarkovList::IsIt(MarkovPtr cur, std::string s, int pos)
     if(pos == s.size())
         return true;
     
-    if (cur == nullptr)
+    if (cur == list.end())
         return false;
 
-    if (cur->val == s[pos])
-        return IsIt(cur->next, s, pos+1);
+    if (*cur == s[pos])
+        return IsIt(std::next(cur), s, pos+1);
     
     return false;
 }
 
-MarkovPtr MarkovList::Search(MarkovPtr ptr, std::string what)
+MarkovList::MarkovPtr MarkovList::Search(MarkovPtr ptr, std::string what)
 {
     //Here ptr is begigning
 
     int sz = what.size();
-    while (ptr)
+    while (ptr != list.end())
     {
         if(IsIt(ptr, what, 0))
             return ptr;
-        ptr = ptr->next;
+        ptr++;
     }
 
-    return nullptr;
+    return list.end();
     
 }
 
-MarkovPtr MarkovList::MoveTo(MarkovPtr cur, int sz)
+MarkovList::MarkovPtr MarkovList::MoveTo(MarkovPtr cur, int sz)
 {
-    while(sz)
-    {
-        if(!cur->next)
-            return nullptr;
-        
-        --sz;
-        cur = cur->next;
-    }
-
-    return cur;
-    
+    return std::next(cur, sz);
 }
+
 void MarkovList::AddParts(MarkovPtr beg, int sz)
 {
     if (sz <= 0)
         return;
 
-    MarkovPtr cur, end;
-    end = beg->next;
-    
-    for(int i = 0; i < sz; ++i)
-    {
-        cur = new MarkovPart;
-        beg->next = cur;
-        beg = cur;
-    }
-
-    beg->next = end;
+    std::list<char> to_insert(sz);
+    list.insert(std::next(beg), to_insert.begin(), to_insert.end());
 }
 
 void MarkovList::DeleteParts(MarkovPtr beg, int sz)
 {
     //Deltes part starting from beg (beg not included)
-    MarkovPtr ptr;
-    ptr = beg->next;
-    for(int i = 0; i < sz; ++i)
-    {
-        if (!beg->next)
-            {//Error
-            }
-
-        beg->next = ptr->next;
-        delete ptr;
-        ptr = beg->next;
-
-    }
-
-    
+    list.erase(std::next(beg), std::next(beg, sz+1));
 }
 
 void MarkovList::ReplaceValue(MarkovPtr ptr, std::string s, int i = 0)
 {
     if(s.size() == i)
         return;
-    if(!ptr);
-        //Error
-    ptr->val = s[i];
-    ReplaceValue(ptr->next, s, i+1);
 
+    assert(ptr != list.end());
+
+    *ptr = s[i];
+    ReplaceValue(++ptr, s, i+1);
 }
+
 void MarkovList::Replace(MarkovPtr ptr,std::string what, std::string to)
 {
     int diff = what.size() - to.size();
@@ -195,64 +126,40 @@ void MarkovList::Replace(MarkovPtr ptr,std::string what, std::string to)
 
     }
     ReplaceValue(ptr, to);
-    _size += (to.size() - what.size());
 }
 
 void MarkovList::show()
 {
-    MarkovPtr ptr = FIRST;
-    while (ptr)
-    {
-        std::cout << ptr->val;
-        ptr = ptr->next;
-    }
+    for (char ch : list)
+        std::cout << ch;
     std::cout << '\n';
-
 }
 
 std::string MarkovList::data()
 {
-    std::string ret;
-    MarkovPtr ptr = FIRST;
-    while (ptr)
-    {
-        ret += ptr->val;
-        ptr = ptr->next;
-    }
-
-    return ret;
+    return std::string(list.begin(), list.end());
 }
 
 int MarkovList::replace(std::string what, std::string to)
 {
     int i = 0;
-    MarkovPtr ptr = FIRST;
-    while((ptr = Search(ptr, what)))
+    MarkovPtr ptr = list.begin();
+    while((ptr = Search(ptr, what)) != list.end())
     {
         ++i;
         Replace(ptr, what, to);
-
     }
 
     return i;
-
 }
 
-char * MarkovList::data_char()
+char* MarkovList::data_char()
 {
-    char * out = new char[_size];
+    char* out = new char[list.size()];
 
-    MarkovPtr ptr = FIRST;
-    for(int i = 0; i < _size ; i++)
-    {
-        if (!ptr)
-            {   
-                std::cout << "Error in returning data with char" << std::endl;
-                break;
-            }
-        out[i] = ptr->val;
-        ptr = ptr->next;
-    }
+    MarkovPtr ptr = list.begin();
+    for (size_t i = 0; i < list.size(); ++i)
+        out[i] = *ptr++;
+
     return out;
-
 }

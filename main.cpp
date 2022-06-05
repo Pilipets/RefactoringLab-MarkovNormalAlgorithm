@@ -1,13 +1,5 @@
 #include "markov_lib/MarkovAlgo.h"
 
-
-struct AlgoConfig {
-    std::string rules_fp;
-    std::string input_fp;
-    std::string output_fp;
-};
-
-
 int main()
 {
     char Alphabet[100], Tuple[100], *filedata, *input_data;

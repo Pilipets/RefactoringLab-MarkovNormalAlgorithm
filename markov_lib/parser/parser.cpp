@@ -5,6 +5,7 @@
 
 #include "../utils/file.h"
 
+
 void clear_spaces_and_lines(char **ch)
 {
     while (**ch == ' ' || **ch == '\n')
