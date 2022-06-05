@@ -13,11 +13,6 @@ Command::Command(std::string s1, std::string s2, int num,  bool c_end)
     n = num;
 }
 
-MarkovList::MarkovPtr MarkovList::GiveLast()
-{
-    return std::prev(list.end());
-}
-
 void MarkovList::CreateNewParts(int add_size)
 {
     if (add_size <= 0)
@@ -37,7 +32,7 @@ MarkovList::MarkovList(char* s)
     }
 }
 
-MarkovList::MarkovList(std::string s)
+MarkovList::MarkovList(const std::string& s)
 {
     int sz = s.size();
     CreateNewParts(sz);
@@ -50,21 +45,15 @@ MarkovList::MarkovList(std::string s)
     }
 }   
 
-bool MarkovList::IsIt(MarkovPtr cur, std::string s, int pos)
+bool MarkovList::IsIt(MarkovPtr cur, const std::string& s, int pos)
 {
-    if(pos == s.size())
-        return true;
-    
-    if (cur == list.end())
-        return false;
+    while (cur != list.end() && pos != s.size() && *cur == s[pos])
+        ++cur, ++pos;
 
-    if (*cur == s[pos])
-        return IsIt(std::next(cur), s, pos+1);
-    
-    return false;
+    return pos == s.size();
 }
 
-MarkovList::MarkovPtr MarkovList::Search(MarkovPtr ptr, std::string what)
+MarkovList::MarkovPtr MarkovList::Search(MarkovPtr ptr, const std::string& what)
 {
     //Here ptr is begigning
 
@@ -100,7 +89,7 @@ void MarkovList::DeleteParts(MarkovPtr beg, int sz)
     list.erase(std::next(beg), std::next(beg, sz+1));
 }
 
-void MarkovList::ReplaceValue(MarkovPtr ptr, std::string s, int i = 0)
+void MarkovList::ReplaceValue(MarkovPtr ptr, const std::string& s, int i = 0)
 {
     if(s.size() == i)
         return;
@@ -111,7 +100,7 @@ void MarkovList::ReplaceValue(MarkovPtr ptr, std::string s, int i = 0)
     ReplaceValue(++ptr, s, i+1);
 }
 
-void MarkovList::Replace(MarkovPtr ptr, std::string what, std::string to)
+void MarkovList::Replace(MarkovPtr ptr, const std::string& what, const std::string& to)
 {
     int diff = what.size() - to.size();
     if(diff > 0)
@@ -140,7 +129,7 @@ std::string MarkovList::data()
     return std::string(list.begin(), list.end());
 }
 
-int MarkovList::replace(std::string what, std::string to)
+int MarkovList::replace(const std::string& what, const std::string& to)
 {
     int i = 0;
     MarkovPtr ptr = list.begin();

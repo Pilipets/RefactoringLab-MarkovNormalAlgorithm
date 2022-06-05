@@ -21,28 +21,24 @@ class MarkovList
     using MarkovPtr = decltype(list.begin());
 
     //functions
-    MarkovPtr GiveLast();
-    MarkovPtr Search(MarkovPtr ptr, std::string what);
-
-    bool IsIt(MarkovPtr cur, std::string s, int pos);
-
-    MarkovPtr MoveTo(MarkovPtr, int);
+    MarkovPtr Search(MarkovPtr ptr, const std::string& what);
+    bool IsIt(MarkovPtr cur, const std::string& s, int pos);
+    MarkovPtr MoveTo(MarkovPtr cur, int sz);
 
     //operations 
     void CreateNewParts(int);
     void DeleteParts(MarkovPtr beg, int sz);
-    void ReplaceValue(MarkovPtr ptr, std::string s, int i);
+    void ReplaceValue(MarkovPtr ptr, const std::string& s, int i);
     void AddParts(MarkovPtr beg, int sz);
-    void Replace(MarkovPtr ptr,std::string what, std::string to);
+    void Replace(MarkovPtr ptr, const std::string& what, const std::string& to);
 
 public:
     MarkovList(char* s);
-    MarkovList(std::string s);
+    MarkovList(const std::string& s);
 
     int size();
-    int replace(std::string what, std::string to);
+    int replace(const std::string& what, const std::string& to);
     void show();
     std::string data();
     char * data_char();
-
 };
