@@ -1,0 +1,7 @@
+T = {q, w, e, r, t y, u, i, o, p, a, s, d, f, g}
+A = {a, q, e, r, t}
+
+a -> bc
+c -> d
+db ->. end
+
