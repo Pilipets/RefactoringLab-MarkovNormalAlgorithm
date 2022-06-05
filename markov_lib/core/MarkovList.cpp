@@ -26,7 +26,7 @@ void MarkovList::CreateNewParts(int add_size)
     list.resize(add_size);
 }
 
-MarkovList::MarkovList(char * s)
+MarkovList::MarkovList(char* s)
 {
     CreateNewParts(std::strlen(s));
     MarkovPtr ptr = list.begin();
@@ -111,7 +111,7 @@ void MarkovList::ReplaceValue(MarkovPtr ptr, std::string s, int i = 0)
     ReplaceValue(++ptr, s, i+1);
 }
 
-void MarkovList::Replace(MarkovPtr ptr,std::string what, std::string to)
+void MarkovList::Replace(MarkovPtr ptr, std::string what, std::string to)
 {
     int diff = what.size() - to.size();
     if(diff > 0)
