@@ -1,34 +1,31 @@
 #pragma once
 
-#include <string>
 #include <list>
+#include <string>
 
-
-struct Command
-{
+struct Command {
     std::string first;
     std::string second;
     int num;
     bool is_end;
 };
 
-
-class MarkovList
-{
+class MarkovList {
     std::list<char> list;
     using MarkovPtr = decltype(list)::iterator;
 
-    //functions
+    // functions
     MarkovPtr _findStr(MarkovPtr ptr, const std::string& what);
     bool _isSubstr(MarkovPtr cur, const std::string& s, int pos);
 
-    //operations
+    // operations
     void _deleteRange(MarkovPtr beg, int sz);
     void _replaceRange(MarkovPtr ptr, const std::string& s, int i);
     void _extendRange(MarkovPtr beg, int sz);
-    void _replaceStr(MarkovPtr ptr, const std::string& what, const std::string& to);
+    void _replaceStr(MarkovPtr ptr, const std::string& what,
+                     const std::string& to);
 
-public:
+   public:
     MarkovList(char* s);
     MarkovList(const std::string& s);
 
