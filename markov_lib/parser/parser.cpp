@@ -6,111 +6,80 @@
 #include "../utils/file.h"
 
 
-void clear_spaces_and_lines(char **ch)
+void skip_spaces_and_lines(char **ch)
 {
     while (**ch == ' ' || **ch == '\n')
     {
         (*ch)++;
     }
-    
 }
 
-bool is_command(char *str)
-{
-    while(*str != '\n' && *str != '\0')
-    {
-        if(*str == '=')
-            return true;
-    }
-    return false;
-
-}
-
-void clear_spaces(char **ch)
+void skip_spaces(char **ch)
 {
     while (**ch == ' ')
     {
         (*ch)++;
     }
-    
-
 }
 
-bool is_operator(char *str)
+char parse_symbol(char **ch)
 {
-    return (*str == '-' && *(str+1) == '>');
-}
-
-bool is_symbol(char *str, char target)
-{
-    return *str == target;
-}
-
-char extract_symbol(char **ch)
-{
-    clear_spaces(ch);
+    skip_spaces(ch);
    
     char c = **ch;
-    clear_spaces(ch);
+    skip_spaces(ch);
     if(*(++(*ch)) == ',')
         (*ch)++;
 
     return c;
 }
 
-int extract_mas(char **ch, char * mas)
+int parse_array(char **ch, char * mas)
 {
     while(**ch != '}' && **ch != '\0')
     {
-     
-        clear_spaces(ch);
-        char c = extract_symbol(ch);
+        skip_spaces(ch);
+        char c = parse_symbol(ch);
     
         *mas = c;
         mas++;
-        
-        
     }
 
     *mas = '\0';
     std::sort(mas, mas+strlen(mas));
     if(**ch != '\0')
-        {(*ch)++; return 0;}
+    {
+        (*ch)++;
+        return 0;
+    }
     
     return 1;
 }
 
-int move_to(char **ch, char symbol)
+int skip_to_symbol(char **ch, char symbol)
 {
     while (**ch != symbol && **ch != '\0')
     {
         (*ch)++;
     }
+
     if(**ch == symbol)
         return 0;
     return 1;
-    
 }
 
-int extract_tuple(char **ch, char *tuple)
+int parse_alphabet(char **ch, char * alp)
 {
-    move_to(ch, '{');
+    skip_to_symbol(ch, '{');
     (*ch)++;
-    return extract_mas(ch, tuple);
+    return parse_array(ch, alp);
 }
 
-int extract_alphabet(char **ch, char * alp)
-{
-    move_to(ch, '{');
-    (*ch)++;
-    return extract_mas(ch, alp);
-}
-
-int one_command(char **ch,  std::vector<Command> &V, int n)
+int parse_command(char **ch,  std::vector<Command> &V, int n)
 {
     std::string s1 = "", s2 = "";
     bool is_end = false;
-    clear_spaces(ch);
+    skip_spaces(ch);
   
     while(isprint(**ch))
     {   
@@ -118,14 +87,14 @@ int one_command(char **ch,  std::vector<Command> &V, int n)
         if(**ch == ' ')
         {
             if((*((*ch) + 1)) == '-' && (*((*ch) + 2)) == '>')
-        {
-            *ch += 3;
-            if(**ch == '.')
-            {(*ch)++ ; is_end = true;}
-            break;
+            {
+                *ch += 3;
+                if(**ch == '.')
+                {(*ch)++ ; is_end = true;}
+                break;
+            }
         }
-            
-        }
+
         if(**ch == '-' && (*((*ch) + 1)) == '>')
         {
             *ch += 2;
@@ -135,29 +104,24 @@ int one_command(char **ch,  std::vector<Command> &V, int n)
         }
         s1 += **ch;
         (*ch)++;
-
     }
+
     //cout << **ch << endl;
-    clear_spaces(ch);
+    skip_spaces(ch);
     while (isprint(**ch))
     {
-       
         s2 += **ch;
         (*ch)++;
     }
 
     Command cm(s1, s2, n, is_end);
-
     V.push_back(cm);
+    skip_spaces_and_lines(ch);
 
-
-    clear_spaces_and_lines(ch);
-
-
-    return (int) (**ch == '\0');
+    return **ch == '\0';
 }
 
-int extract(char **ch, char *alphabet, char *tuple, std::vector<Command> &V)
+int parse_commands(char **ch, char *alphabet, char *tuple, std::vector<Command> &V)
 {
 /*
 T = {} // Tuple to work with
@@ -168,22 +132,23 @@ A = {} //Alphabet to input
 ...
 
 */
-    clear_spaces_and_lines(ch);
+    skip_spaces_and_lines(ch);
 
     for(int i = 0; i < 2; i++)
     {
-        
-        clear_spaces_and_lines(ch);
+        skip_spaces_and_lines(ch);
         if(**ch == 'T')
-            extract_tuple(ch, tuple);
+            parse_alphabet(ch, tuple);
         else if(**ch == 'A')
-            extract_alphabet(ch, alphabet);
+            parse_alphabet(ch, alphabet);
     }
 
-    clear_spaces_and_lines(ch);
+    skip_spaces_and_lines(ch);
     int n = 0;
-    while(!one_command(ch, V, n))
-    {n++;}
+    while(!parse_command(ch, V, n))
+    {
+        n++;
+    }
 
-    return 0;
+    return n;
 }

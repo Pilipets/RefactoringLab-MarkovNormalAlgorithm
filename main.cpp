@@ -1,4 +1,4 @@
-#include "markov_lib/MarkovAlgo.h"
+#include "markov_lib/MarkovLib.h"
 
 int main()
 {
@@ -6,19 +6,19 @@ int main()
 
     auto config = AlgoConfig{"data/alg.txt", "data/inp.txt", "data/out.txt"};
 
-    filedata = ReadFileToOne(config.rules_fp.c_str());
-    input_data = ReadFileToOne(config.input_fp.c_str());
+    filedata = read_file(config.rules_fp.c_str());
+    input_data = read_file(config.input_fp.c_str());
     char **ch = &filedata;
     
     std::vector<Command> commands;
-    extract(&filedata, Alphabet, Tuple, commands);
+    parse_commands(&filedata, Alphabet, Tuple, commands);
 
     MarkovList ML(input_data);
     ML.show();
 
     RunAlgoritm(ML, commands, true, false, false);
     if (!config.output_fp.empty())
-        WriteToFile(ML.data_char(), config.output_fp.c_str());
+        write_to_file(ML.data_char(), config.output_fp.c_str());
 
    return 0;
 }

@@ -1,7 +1,7 @@
 #include "file.h"
 
 
-bool readline(FILE *file, char * ret)
+bool read_line(FILE *file, char * ret)
 {
     char c;
     bool res = false;
@@ -23,7 +23,7 @@ bool readline(FILE *file, char * ret)
     return  res;
 }
 
-std::vector<char *> read_file(char *filename)
+std::vector<char *> read_lines(char *filename)
 {
     FILE *file;
     std::vector<char *> ret;
@@ -35,23 +35,25 @@ std::vector<char *> read_file(char *filename)
     size_t len;
     ssize_t read;
     
-    while (readline(file, line))
+    while (read_line(file, line))
     {
         ret.push_back(line);
         line = new char[128];
-    
     }
 
     return ret;
 }
 
-char * ReadFileToOne(const char *filename)
+char* read_file(const char *filename)
 {
     FILE *file;
     char *ret = NULL, *cp, c;
     file = fopen(filename, "r");
     if(file == NULL)
-    {    printf("Error while opening file \n"); return ret;}
+    {
+        printf("Error while opening file \n");
+        return ret;
+    }
 
     ret = new char[100000];
     cp = ret;
@@ -64,15 +66,12 @@ char * ReadFileToOne(const char *filename)
     *cp = '\n';
 
     return ret;
-
-
 }
 
-void WriteToFile(char* data, const char* filename)
+void write_to_file(char* data, const char* filename)
 {
     FILE *file; 
 
     file = fopen(filename, "w");
     fputs(data, file);
-        
 }

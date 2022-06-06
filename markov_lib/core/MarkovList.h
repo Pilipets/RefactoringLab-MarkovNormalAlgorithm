@@ -18,19 +18,17 @@ struct Command
 class MarkovList
 {
     std::list<char> list;
-    using MarkovPtr = decltype(list.begin());
+    using MarkovPtr = decltype(list)::iterator;
 
     //functions
-    MarkovPtr Search(MarkovPtr ptr, const std::string& what);
-    bool IsIt(MarkovPtr cur, const std::string& s, int pos);
-    MarkovPtr MoveTo(MarkovPtr cur, int sz);
+    MarkovPtr _findStr(MarkovPtr ptr, const std::string& what);
+    bool _isSubstr(MarkovPtr cur, const std::string& s, int pos);
 
-    //operations 
-    void CreateNewParts(int);
-    void DeleteParts(MarkovPtr beg, int sz);
-    void ReplaceValue(MarkovPtr ptr, const std::string& s, int i);
-    void AddParts(MarkovPtr beg, int sz);
-    void Replace(MarkovPtr ptr, const std::string& what, const std::string& to);
+    //operations
+    void _deleteRange(MarkovPtr beg, int sz);
+    void _replaceRange(MarkovPtr ptr, const std::string& s, int i);
+    void _extendRange(MarkovPtr beg, int sz);
+    void _replaceStr(MarkovPtr ptr, const std::string& what, const std::string& to);
 
 public:
     MarkovList(char* s);
@@ -40,5 +38,5 @@ public:
     int replace(const std::string& what, const std::string& to);
     void show();
     std::string data();
-    char * data_char();
+    char* data_char();
 };
