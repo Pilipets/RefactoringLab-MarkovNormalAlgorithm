@@ -5,37 +5,14 @@
 #include <cassert>
 #include <iterator>
 
-Command::Command(std::string s1, std::string s2, int num,  bool c_end)
-{
-    first = std::move(s1);
-    second = std::move(s2);
-    is_end = c_end;
-    n = num;
-}
 
-MarkovList::MarkovList(char* s)
-{
-    list.resize(std::strlen(s));
-    MarkovPtr ptr = list.begin();
+MarkovList::MarkovList(char* s):
+    list(s, s + std::strlen(s))
+{}
 
-    while(std::next(ptr) != list.end())
-    {
-        *ptr++ = *s++;
-    }
-}
-
-MarkovList::MarkovList(const std::string& s)
-{
-    int sz = s.size();
-    list.resize(sz);
-    MarkovPtr ptr = list.begin();
-
-    for(int i = 0; i < sz; ++i)
-    {
-        *ptr = s[i];
-        ptr++;
-    }
-}   
+MarkovList::MarkovList(const std::string& s):
+    list(s.begin(), s.end())
+{}   
 
 bool MarkovList::_isSubstr(MarkovPtr cur, const std::string& s, int pos)
 {
@@ -124,11 +101,12 @@ int MarkovList::replace(const std::string& what, const std::string& to)
 
 char* MarkovList::data_char()
 {
-    char* out = new char[list.size()];
+    char* out = new char[list.size()+1];
 
     MarkovPtr ptr = list.begin();
     for (size_t i = 0; i < list.size(); ++i)
         out[i] = *ptr++;
 
+    out[list.size()] = '\0';
     return out;
 }

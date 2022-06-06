@@ -8,10 +8,8 @@ struct Command
 {
     std::string first;
     std::string second;
+    int num;
     bool is_end;
-    int n;
-
-    Command(std::string s1, std::string s2, int num,  bool c_end);
 };
 
 

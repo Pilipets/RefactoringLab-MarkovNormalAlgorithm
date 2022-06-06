@@ -63,7 +63,6 @@ char* read_file(const char *filename)
         *cp = c;
         cp++;
     }
-    *cp = '\n';
 
     return ret;
 }

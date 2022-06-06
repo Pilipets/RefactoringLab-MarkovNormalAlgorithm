@@ -1,0 +1,3 @@
+1. Rename method/function arguments;
+2. Add namespaces;
+3. Add patterns like strategy;

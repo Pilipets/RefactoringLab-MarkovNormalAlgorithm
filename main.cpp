@@ -1,4 +1,4 @@
-#include "markov_lib/MarkovLib.h"
+#include "markov_lib/MarkovAlgo.h"
 
 int main()
 {

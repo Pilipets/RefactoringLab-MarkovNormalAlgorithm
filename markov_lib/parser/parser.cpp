@@ -114,7 +114,7 @@ int parse_command(char **ch,  std::vector<Command> &V, int n)
         (*ch)++;
     }
 
-    Command cm(s1, s2, n, is_end);
+    Command cm{s1, s2, n, is_end};
     V.push_back(cm);
     skip_spaces_and_lines(ch);
 
