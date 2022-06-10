@@ -12,12 +12,14 @@ int main()
         .setStrategy(MarkovAlgoSimulator::AlgorithmStrategy::LIST_MARKOV_ALGO);
 
     auto output = sim.getOutput();
-    std::cout << "Output: " << output << "\n";
+    std::cout << "Output: " << output << "\n\n";
 
     sim.writeOutput();
+    std::cout << "\n";
 
     auto input_data = read_file("data/inp.txt");
     output = sim.getOutput(input_data);
+    std::cout << "\n";
 
     std::cout << "Input: " << input_data << "\n";
     std::cout << "Output: " << output << "\n";

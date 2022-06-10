@@ -20,8 +20,4 @@ public:
 
     virtual std::string execute(std::string input) = 0;
     virtual std::string data() const = 0;
-
-    // Might be present or not
-    /*virtual void initSteps(std::string input) {};
-    virtual std::string executeStep() {};*/
 };

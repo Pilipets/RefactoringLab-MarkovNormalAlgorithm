@@ -2,6 +2,9 @@
 #include <cstring>
 #include <iostream>
 #include <iterator>
+#if _VERBOSE
+#include <unordered_set>
+#endif
 
 #include "ListMarkovAlgorithm.h"
 
@@ -83,8 +86,25 @@ ListMarkovAlgorithm::ListMarkovAlgorithm(std::string alphabet, std::string tuple
 std::string ListMarkovAlgorithm::execute(std::string input)
 {
     list = std::list<char>(input.begin(), input.end());
+#if _VERBOSE
+    std::string prev = data();
+    std::unordered_set<std::string> data_set;
+#endif
     for (const auto& com : commands) {
-        _replaceAllStr(com.first, com.second);
+#if _VERBOSE
+        std::cout << prev << "-->";
+#endif
+        int ret = _replaceAllStr(com.first, com.second);
+#if _VERBOSE
+        std::string cur = data();
+        assert(cur != prev);
+        prev = cur;
+
+        std::cout << cur << "\n";
+        assert(data_set.insert(std::move(cur)).second);
+#endif
+        if (ret && com.is_end)
+            break;
     }
 
     return data();
@@ -94,15 +114,3 @@ std::string ListMarkovAlgorithm::data() const
 {
     return std::string(list.begin(), list.end());
 }
-
-/*void ListMarkovAlgorithm::initSteps(std::string input)
-{
-    list = std::list<char>(input.begin(), input.end());
-}
-
-std::string ListMarkovAlgorithm::executeStep()
-{
-    _replaceAllStr(com.first, com.second);
-
-    return data();
-}*/

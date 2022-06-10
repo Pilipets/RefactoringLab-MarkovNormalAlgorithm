@@ -26,7 +26,4 @@ public:
 
     std::string execute(std::string input) override;
     std::string data() const override;
-
-    /*void initSteps(std::string input) override;
-    std::string executeStep() override;*/
 };
