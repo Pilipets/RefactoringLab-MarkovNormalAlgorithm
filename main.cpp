@@ -1,23 +1,25 @@
 #include "markov_lib/MarkovAlgo.h"
 
+#include <memory>
+#include <iostream>
+
 int main() {
-    char Alphabet[100], Tuple[100], *filedata, *input_data;
+    MarkovAlgoSimulator sim;
 
-    auto config = AlgoConfig{"data/alg.txt", "data/inp.txt", "data/out.txt"};
+    sim \
+        .setConfig({"data/alg.txt", "data/inp.txt", "data/out.txt"}) \
+        .setStrategy(MarkovAlgoSimulator::AlgorithmStrategy::LIST_MARKOV_ALGO);
 
-    filedata = read_file(config.rules_fp.c_str());
-    input_data = read_file(config.input_fp.c_str());
-    char** ch = &filedata;
+    auto output = sim.getOutput();
+    std::cout << "Output: " << output << "\n";
 
-    std::vector<Command> commands;
-    parse_commands(&filedata, Alphabet, Tuple, commands);
+    sim.writeOutput();
 
-    MarkovList ML(input_data);
-    ML.show();
+    auto input_data = read_file("data/inp.txt");
+    output = sim.getOutput(input_data);
 
-    RunAlgoritm(ML, commands, true, false, false);
-    if (!config.output_fp.empty())
-        write_to_file(ML.data_char(), config.output_fp.c_str());
+    std::cout << "Input: " << input_data << "\n";
+    std::cout << "Output: " << output << "\n";
 
     return 0;
 }

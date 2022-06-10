@@ -1,3 +1,7 @@
 1. Rename method/function arguments;
-2. Add namespaces;
-3. Add patterns like strategy;
+2. Replace file.h/.cpp logic with the normal one;
+3. Add namespaces;
+4. Add patterns like strategy;
+5. Refactor parsing;
+6. Add step by step output to simulator as we had before;
+7. Refactor file lib;

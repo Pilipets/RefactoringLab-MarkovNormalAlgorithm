@@ -2,7 +2,7 @@
 #include <cstring>
 
 #include "../utils/file.h"
-#include "parser.h"
+#include "MarkovParser.h"
 
 void skip_spaces_and_lines(char **ch) {
     while (**ch == ' ' || **ch == '\n') {
@@ -60,7 +60,7 @@ int parse_alphabet(char **ch, char *alp) {
     return parse_array(ch, alp);
 }
 
-int parse_command(char **ch, std::vector<Command> &V, int n) {
+int parse_command(char **ch, std::vector<MarkovCommand> &V, int n) {
     std::string s1 = "", s2 = "";
     bool is_end = false;
     skip_spaces(ch);
@@ -97,7 +97,7 @@ int parse_command(char **ch, std::vector<Command> &V, int n) {
         (*ch)++;
     }
 
-    Command cm{s1, s2, n, is_end};
+    MarkovCommand cm{s1, s2, n, is_end};
     V.push_back(cm);
     skip_spaces_and_lines(ch);
 
@@ -105,7 +105,7 @@ int parse_command(char **ch, std::vector<Command> &V, int n) {
 }
 
 int parse_commands(char **ch, char *alphabet, char *tuple,
-                   std::vector<Command> &V) {
+                   std::vector<MarkovCommand> &V) {
     /*
     T = {} // Tuple to work with
     A = {} //Alphabet to input
