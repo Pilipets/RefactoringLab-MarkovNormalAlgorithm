@@ -7,47 +7,48 @@
 
 #include "../core/MarkovAlgorithm.h"
 #include "../core/ListMarkovAlgorithm.h"
-#include "../parser/MarkovParser.h"
-#include "../utils/FileUtils.h"
+#include "../parser/parser.h"
+#include "../utils/file_utils.h"
 
-struct SimulatorConfig {
-    std::string rules_fp;
-    std::string input_fp;
-    std::string output_fp;
-};
-
-class MarkovAlgoSimulator {
-public:
-    enum AlgorithmStrategy {
-        NONE,
-        LIST_MARKOV_ALGO
+namespace markov_lib
+{
+    struct SimulatorConfig {
+        std::string rules_fp;
+        std::string input_fp;
+        std::string output_fp;
     };
 
-private:
-    std::optional<SimulatorConfig> config;
-    AlgorithmStrategy strategy;
-    std::unique_ptr<MarkovAlgorithm> algo;
+    class MarkovAlgoSimulator {
+    public:
+        enum AlgorithmStrategy {
+            NONE,
+            LIST_MARKOV_ALGO
+        };
 
-    std::unique_ptr<MarkovAlgorithm> getAlgorithm();
-    std::string _getOutput(
-        std::string input, bool show_all = false,
-        bool simple_db = false, bool full_db = false);
+    private:
+        std::optional<SimulatorConfig> config;
+        AlgorithmStrategy strategy;
+        std::unique_ptr<MarkovAlgorithm> algo;
 
-    void _setStrategy(AlgorithmStrategy strategy, std::string alphabet,
-        std::string tuple, std::vector<MarkovCommand> commands);
+        std::unique_ptr<MarkovAlgorithm> getAlgorithm();
+        std::string _getOutput(std::string input);
 
-public:
-    MarkovAlgoSimulator& setConfig(SimulatorConfig config);
+        void _setStrategy(AlgorithmStrategy strategy, std::string alphabet,
+            std::string tuple, std::vector<MarkovCommand> commands);
 
-    MarkovAlgoSimulator& setStrategy(
-        AlgorithmStrategy strategy, std::string alphabet,
-        std::string tuple, std::vector<MarkovCommand> commands);
+    public:
+        MarkovAlgoSimulator& setConfig(SimulatorConfig config);
 
-    MarkovAlgoSimulator& setStrategy(AlgorithmStrategy strategy);
+        MarkovAlgoSimulator& setStrategy(
+            AlgorithmStrategy strategy, std::string alphabet,
+            std::string tuple, std::vector<MarkovCommand> commands);
 
-    std::string getOutput();
-    std::string getOutput(std::string input);
+        MarkovAlgoSimulator& setStrategy(AlgorithmStrategy strategy);
 
-    void writeOutput();
-    void writeOutput(std::string input);
-};
+        std::string getOutput();
+        std::string getOutput(std::string input);
+
+        void writeOutput();
+        void writeOutput(std::string input);
+    };
+}

@@ -1,6 +1,6 @@
 #pragma once
 
 #include "core/ListMarkovAlgorithm.h"
-#include "parser/MarkovParser.h"
+#include "parser/parser.h"
 #include "simulator/MarkovAlgoSimulator.h"
-#include "utils/FileUtils.h"
+#include "utils/file_utils.h"

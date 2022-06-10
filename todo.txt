@@ -1,3 +1,2 @@
-1. Add namespaces;
-2. Refactor the parsing logic itself;
-3. Add tests;
+1. Refactor the parsing logic itself;
+2. Add tests;

@@ -5,6 +5,7 @@
 
 int main()
 {
+    using namespace markov_lib;
     MarkovAlgoSimulator sim;
 
     sim
@@ -17,7 +18,7 @@ int main()
     sim.writeOutput();
     std::cout << "\n";
 
-    auto input_data = read_file("data/inp.txt");
+    auto input_data = utils::read_file("data/inp.txt");
     output = sim.getOutput(input_data);
     std::cout << "\n";
 
