@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <cstring>
 
-#include "../utils/file.h"
+#include "../utils/FileUtils.h"
 #include "MarkovParser.h"
 
 void skip_spaces_and_lines(const char **ch) {

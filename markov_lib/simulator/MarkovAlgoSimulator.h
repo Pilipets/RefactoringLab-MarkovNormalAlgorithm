@@ -8,7 +8,7 @@
 #include "../core/MarkovAlgorithm.h"
 #include "../core/ListMarkovAlgorithm.h"
 #include "../parser/MarkovParser.h"
-#include "../utils/file.h"
+#include "../utils/FileUtils.h"
 
 
 struct SimulatorConfig {

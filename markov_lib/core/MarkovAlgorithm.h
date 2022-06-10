@@ -15,7 +15,6 @@ protected:
     std::string alphabet, tuple;
     std::vector<MarkovCommand> commands;
 public:
-    MarkovAlgorithm() = default;
     MarkovAlgorithm(std::string alphabet, std::string tuple, std::vector<MarkovCommand> commands);
 
     virtual std::string execute(std::string input) = 0;
