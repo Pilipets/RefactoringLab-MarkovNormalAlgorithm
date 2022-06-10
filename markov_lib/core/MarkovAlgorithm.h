@@ -14,6 +14,7 @@ class MarkovAlgorithm {
 protected:
     std::string alphabet, tuple;
     std::vector<MarkovCommand> commands;
+
 public:
     MarkovAlgorithm(std::string alphabet, std::string tuple, std::vector<MarkovCommand> commands);
 

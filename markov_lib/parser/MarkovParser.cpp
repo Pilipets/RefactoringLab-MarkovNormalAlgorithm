@@ -4,29 +4,34 @@
 #include "../utils/FileUtils.h"
 #include "MarkovParser.h"
 
-void skip_spaces_and_lines(const char **ch) {
+void skip_spaces_and_lines(const char** ch)
+{
     while (**ch == ' ' || **ch == '\n') {
         (*ch)++;
     }
 }
 
-void skip_spaces(const char **ch) {
+void skip_spaces(const char** ch)
+{
     while (**ch == ' ') {
         (*ch)++;
     }
 }
 
-char parse_symbol(const char **ch) {
+char parse_symbol(const char** ch)
+{
     skip_spaces(ch);
 
     char c = **ch;
     skip_spaces(ch);
-    if (*(++(*ch)) == ',') (*ch)++;
+    if (*(++(*ch)) == ',')
+        (*ch)++;
 
     return c;
 }
 
-int parse_array(const char **ch, std::string &arr) {
+int parse_array(const char** ch, std::string& arr)
+{
     while (**ch != '}' && **ch != '\0') {
         skip_spaces(ch);
         char c = parse_symbol(ch);
@@ -44,22 +49,26 @@ int parse_array(const char **ch, std::string &arr) {
     return 1;
 }
 
-int skip_to_symbol(const char **ch, char symbol) {
+int skip_to_symbol(const char** ch, char symbol)
+{
     while (**ch != symbol && **ch != '\0') {
         (*ch)++;
     }
 
-    if (**ch == symbol) return 0;
+    if (**ch == symbol)
+        return 0;
     return 1;
 }
 
-int parse_alphabet(const char **ch, std::string &alphabet) {
+int parse_alphabet(const char** ch, std::string& alphabet)
+{
     skip_to_symbol(ch, '{');
     (*ch)++;
     return parse_array(ch, alphabet);
 }
 
-int parse_command(const char **ch, std::vector<MarkovCommand> &commands, int n) {
+int parse_command(const char** ch, std::vector<MarkovCommand>& commands, int n)
+{
     std::string s1 = "", s2 = "";
     bool is_end = false;
     skip_spaces(ch);
@@ -102,10 +111,11 @@ int parse_command(const char **ch, std::vector<MarkovCommand> &commands, int n) 
 
 int parse_commands(
     const char* input,
-    std::string &alphabet,
-    std::string &tuple,
-    std::vector<MarkovCommand> &commands) {
-    
+    std::string& alphabet,
+    std::string& tuple,
+    std::vector<MarkovCommand>& commands)
+{
+
     const char** ch = &input;
     skip_spaces_and_lines(ch);
 

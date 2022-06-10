@@ -10,13 +10,11 @@
 #include "../parser/MarkovParser.h"
 #include "../utils/FileUtils.h"
 
-
 struct SimulatorConfig {
     std::string rules_fp;
     std::string input_fp;
     std::string output_fp;
 };
-
 
 class MarkovAlgoSimulator {
 public:
@@ -39,7 +37,6 @@ private:
         std::string tuple, std::vector<MarkovCommand> commands);
 
 public:
-
     MarkovAlgoSimulator& setConfig(SimulatorConfig config);
 
     MarkovAlgoSimulator& setStrategy(

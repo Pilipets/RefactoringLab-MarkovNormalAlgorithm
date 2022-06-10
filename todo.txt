@@ -1,4 +1,4 @@
-1. Add step by step output to simulator as we had before;
+1. Add step by step output to the simulator as we had before;
 2. Add namespaces;
 3. Refactor the parsing logic itself;
 4. Add tests;

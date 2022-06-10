@@ -3,11 +3,12 @@
 #include <memory>
 #include <iostream>
 
-int main() {
+int main()
+{
     MarkovAlgoSimulator sim;
 
-    sim \
-        .setConfig({"data/alg.txt", "data/inp.txt", "data/out.txt"}) \
+    sim
+        .setConfig({ "data/alg.txt", "data/inp.txt", "data/out.txt" })
         .setStrategy(MarkovAlgoSimulator::AlgorithmStrategy::LIST_MARKOV_ALGO);
 
     auto output = sim.getOutput();

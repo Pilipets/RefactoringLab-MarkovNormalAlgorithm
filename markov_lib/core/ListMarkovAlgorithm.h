@@ -4,7 +4,6 @@
 
 #include <list>
 
-
 class ListMarkovAlgorithm : public MarkovAlgorithm {
     std::list<char> list;
     using MarkovPtr = decltype(list)::iterator;
