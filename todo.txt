@@ -2,6 +2,6 @@
 2. Replace file.h/.cpp logic with the normal one;
 3. Add namespaces;
 4. Add patterns like strategy;
-5. Refactor parsing;
+5. Refactor parsing lib to allow different parsers + refactor the parsing logic itself;
 6. Add step by step output to simulator as we had before;
 7. Refactor file lib;

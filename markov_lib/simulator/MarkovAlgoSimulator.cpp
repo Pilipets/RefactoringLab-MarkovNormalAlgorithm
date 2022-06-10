@@ -52,9 +52,7 @@ MarkovAlgoSimulator& MarkovAlgoSimulator::setStrategy(AlgorithmStrategy strategy
         if(strategy != AlgorithmStrategy::NONE) {
 
             auto file_data = read_file(config->rules_fp.c_str());
-            alphabet = std::string(100, 'c'), tuple = std::string(100, 'c');
-            parse_commands(&file_data, alphabet.data(), tuple.data(), commands);
-
+            parse_commands(file_data.data(), alphabet, tuple, commands);
         }
 
         _setStrategy(strategy, std::move(alphabet), std::move(tuple), std::move(commands));

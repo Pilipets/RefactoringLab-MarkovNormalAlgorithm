@@ -4,19 +4,19 @@
 #include "../utils/file.h"
 #include "MarkovParser.h"
 
-void skip_spaces_and_lines(char **ch) {
+void skip_spaces_and_lines(const char **ch) {
     while (**ch == ' ' || **ch == '\n') {
         (*ch)++;
     }
 }
 
-void skip_spaces(char **ch) {
+void skip_spaces(const char **ch) {
     while (**ch == ' ') {
         (*ch)++;
     }
 }
 
-char parse_symbol(char **ch) {
+char parse_symbol(const char **ch) {
     skip_spaces(ch);
 
     char c = **ch;
@@ -26,17 +26,16 @@ char parse_symbol(char **ch) {
     return c;
 }
 
-int parse_array(char **ch, char *mas) {
+int parse_array(const char **ch, std::string &arr) {
     while (**ch != '}' && **ch != '\0') {
         skip_spaces(ch);
         char c = parse_symbol(ch);
 
-        *mas = c;
-        mas++;
+        arr.push_back(c);
     }
 
-    *mas = '\0';
-    std::sort(mas, mas + strlen(mas));
+    arr.push_back('\0');
+    std::sort(arr.begin(), arr.end());
     if (**ch != '\0') {
         (*ch)++;
         return 0;
@@ -45,7 +44,7 @@ int parse_array(char **ch, char *mas) {
     return 1;
 }
 
-int skip_to_symbol(char **ch, char symbol) {
+int skip_to_symbol(const char **ch, char symbol) {
     while (**ch != symbol && **ch != '\0') {
         (*ch)++;
     }
@@ -54,19 +53,18 @@ int skip_to_symbol(char **ch, char symbol) {
     return 1;
 }
 
-int parse_alphabet(char **ch, char *alp) {
+int parse_alphabet(const char **ch, std::string &alphabet) {
     skip_to_symbol(ch, '{');
     (*ch)++;
-    return parse_array(ch, alp);
+    return parse_array(ch, alphabet);
 }
 
-int parse_command(char **ch, std::vector<MarkovCommand> &V, int n) {
+int parse_command(const char **ch, std::vector<MarkovCommand> &commands, int n) {
     std::string s1 = "", s2 = "";
     bool is_end = false;
     skip_spaces(ch);
 
     while (isprint(**ch)) {
-        // cout << **ch << endl;
         if (**ch == ' ') {
             if ((*((*ch) + 1)) == '-' && (*((*ch) + 2)) == '>') {
                 *ch += 3;
@@ -90,31 +88,25 @@ int parse_command(char **ch, std::vector<MarkovCommand> &V, int n) {
         (*ch)++;
     }
 
-    // cout << **ch << endl;
     skip_spaces(ch);
     while (isprint(**ch)) {
         s2 += **ch;
         (*ch)++;
     }
 
-    MarkovCommand cm{s1, s2, n, is_end};
-    V.push_back(cm);
+    commands.emplace_back(std::move(s1), std::move(s2), n, is_end);
     skip_spaces_and_lines(ch);
 
     return **ch == '\0';
 }
 
-int parse_commands(char **ch, char *alphabet, char *tuple,
-                   std::vector<MarkovCommand> &V) {
-    /*
-    T = {} // Tuple to work with
-    A = {} //Alphabet to input
-
-    ...
-    //commands
-    ...
-
-    */
+int parse_commands(
+    const char* input,
+    std::string &alphabet,
+    std::string &tuple,
+    std::vector<MarkovCommand> &commands) {
+    
+    const char** ch = &input;
     skip_spaces_and_lines(ch);
 
     for (int i = 0; i < 2; i++) {
@@ -127,7 +119,7 @@ int parse_commands(char **ch, char *alphabet, char *tuple,
 
     skip_spaces_and_lines(ch);
     int n = 0;
-    while (!parse_command(ch, V, n)) {
+    while (!parse_command(ch, commands, n)) {
         n++;
     }
 
