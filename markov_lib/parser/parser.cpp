@@ -1,7 +1,6 @@
 #include "parser.h"
 
 #include <algorithm>
-#include <cstring>
 
 namespace markov_lib::parser
 {

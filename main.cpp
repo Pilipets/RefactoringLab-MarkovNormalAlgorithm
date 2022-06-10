@@ -1,6 +1,5 @@
 #include "markov_lib/MarkovAlgo.h"
 
-#include <memory>
 #include <iostream>
 
 int main()
