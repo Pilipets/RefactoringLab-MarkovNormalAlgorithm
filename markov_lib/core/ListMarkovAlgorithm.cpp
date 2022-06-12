@@ -1,5 +1,5 @@
 #include <iterator>
-#if _VERBOSE
+#ifdef _VERBOSE
 #include <cassert>
 #include <iostream>
 #include <unordered_set>
@@ -84,19 +84,19 @@ namespace markov_lib::details
     {
     }
 
-    std::string ListMarkovAlgorithm::execute(std::string input)
+    std::string ListMarkovAlgorithm::execute(const std::string& input)
     {
         list = std::list<char>(input.begin(), input.end());
-#if _VERBOSE
+#ifdef _VERBOSE
         std::string prev = data();
         std::unordered_set<std::string> data_set;
 #endif
         for (const auto& com : commands) {
-#if _VERBOSE
+#ifdef _VERBOSE
             std::cout << prev << "-->";
 #endif
             int ret = _replaceAllStr(com.first, com.second);
-#if _VERBOSE
+#ifdef _VERBOSE
             std::string cur = data();
             assert(cur != prev);
             prev = cur;

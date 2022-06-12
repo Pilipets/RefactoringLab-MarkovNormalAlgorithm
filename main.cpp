@@ -1,6 +1,7 @@
 #include "markov_lib/MarkovAlgo.h"
 
 #include <iostream>
+#include <cassert>
 
 int main()
 {
@@ -14,7 +15,7 @@ int main()
     auto output = sim.getOutput();
     std::cout << "Output: " << output << "\n\n";
 
-    sim.writeOutput();
+    assert(output == sim.writeOutput());
     std::cout << "\n";
 
     auto input_data = utils::read_file("data/inp.txt");

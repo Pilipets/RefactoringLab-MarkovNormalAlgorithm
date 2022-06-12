@@ -26,7 +26,7 @@ namespace markov_lib::details
     public:
         ListMarkovAlgorithm(std::string alphabet, std::string tuple, std::vector<MarkovCommand> commands);
 
-        std::string execute(std::string input) override;
+        std::string execute(const std::string& input) override;
         std::string data() const override;
     };
 }

@@ -3,7 +3,6 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include <optional>
 
 #include "../core/MarkovAlgorithm.h"
 #include "../core/ListMarkovAlgorithm.h"
@@ -26,7 +25,7 @@ namespace markov_lib
         };
 
     private:
-        std::optional<SimulatorConfig> config;
+        SimulatorConfig config;
         AlgorithmStrategy strategy;
         std::unique_ptr<MarkovAlgorithm> algo;
 
@@ -45,10 +44,7 @@ namespace markov_lib
 
         MarkovAlgoSimulator& setStrategy(AlgorithmStrategy strategy);
 
-        std::string getOutput();
-        std::string getOutput(std::string input);
-
-        void writeOutput();
-        void writeOutput(std::string input);
+        std::string getOutput(const std::string& input = {});
+        std::string writeOutput(const std::string& input = {});
     };
 }

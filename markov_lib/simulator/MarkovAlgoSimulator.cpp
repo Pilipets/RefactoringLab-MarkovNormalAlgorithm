@@ -8,7 +8,6 @@ namespace markov_lib
 
     std::string MarkovAlgoSimulator::_getOutput(std::string input)
     {
-
         return algo->execute(std::move(input));
     }
 
@@ -16,7 +15,6 @@ namespace markov_lib
         AlgorithmStrategy strategy, std::string alphabet,
         std::string tuple, std::vector<MarkovCommand> commands)
     {
-
         if (strategy == AlgorithmStrategy::LIST_MARKOV_ALGO) {
             algo = std::make_unique<ListMarkovAlgorithm>(
                 std::move(alphabet),
@@ -40,24 +38,21 @@ namespace markov_lib
         AlgorithmStrategy strategy, std::string alphabet,
         std::string tuple, std::vector<MarkovCommand> commands)
     {
-
         if (this->strategy != strategy) {
             _setStrategy(strategy, std::move(alphabet), std::move(tuple), std::move(commands));
         }
-
         return *this;
     }
 
     MarkovAlgoSimulator& MarkovAlgoSimulator::setStrategy(AlgorithmStrategy strategy)
     {
         if (this->strategy != strategy) {
-
             std::string alphabet, tuple;
             std::vector<MarkovCommand> commands;
 
             if (strategy != AlgorithmStrategy::NONE) {
 
-                auto file_data = read_file(config->rules_fp.data());
+                auto file_data = read_file(config.rules_fp.data());
                 parse_commands(file_data.data(), alphabet, tuple, commands);
             }
 
@@ -67,27 +62,22 @@ namespace markov_lib
         return *this;
     }
 
-    std::string MarkovAlgoSimulator::getOutput()
+    std::string MarkovAlgoSimulator::getOutput(const std::string& input)
     {
-        std::string input = read_file(config->input_fp.data());
-        return _getOutput(std::move(input));
+        // Take arg or read from config
+        if (input.size()) {
+            return _getOutput(input);
+        }
+        else {
+            auto input_str = read_file(config.input_fp.data());
+            return _getOutput(input_str);
+        }
     }
 
-    std::string MarkovAlgoSimulator::getOutput(std::string input)
+    std::string MarkovAlgoSimulator::writeOutput(const std::string& input)
     {
-        return _getOutput(std::move(input));
-    }
-
-    void MarkovAlgoSimulator::writeOutput()
-    {
-        std::string input = read_file(config->input_fp.data());
-        auto output = _getOutput(std::move(input));
-        write_to_file(output.data(), config->output_fp.data());
-    }
-
-    void MarkovAlgoSimulator::writeOutput(std::string input)
-    {
-        auto output = _getOutput(std::move(input));
-        write_to_file(output.data(), config->output_fp.data());
+        auto output = getOutput(input);
+        write_to_file(output.data(), config.output_fp.data());
+        return output;
     }
 }

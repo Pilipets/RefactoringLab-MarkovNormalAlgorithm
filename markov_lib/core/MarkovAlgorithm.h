@@ -20,7 +20,7 @@ namespace markov_lib
     public:
         MarkovAlgorithm(std::string alphabet, std::string tuple, std::vector<MarkovCommand> commands);
 
-        virtual std::string execute(std::string input) = 0;
+        virtual std::string execute(const std::string& input) = 0;
         virtual std::string data() const = 0;
     };
 }
