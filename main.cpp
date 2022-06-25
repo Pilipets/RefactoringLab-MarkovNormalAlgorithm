@@ -1,35 +1,29 @@
-#include "lib/recognize.hpp"
-#include "lib/classes.hpp"
-#include "lib/file.hpp"
-#include "lib/Markov.hpp"
+#include "markov_lib/MarkovAlgo.h"
 
 #include <iostream>
-using namespace std;
-
-char ALGO_FILENAME[] = "alg.txt";
-char INPUT_FILENAME[] = "inp.txt";
-char OUTPUT_FILENAME[] = "out.txt";
-
-bool SAVE_RES = false;
-
+#include <cassert>
 
 int main()
 {
-    char Alphabet[100], Tuple[100], *filedata, *input_data;
+    using namespace markov_lib;
+    MarkovAlgoSimulator sim;
 
-    filedata = ReadFileToOne(ALGO_FILENAME);
-    input_data = ReadFileToOne(INPUT_FILENAME);
-    char **ch = &filedata;
-    
-    vector<command> Commands;
-    extract(&filedata, Alphabet, Tuple, Commands);    
+    sim
+        .setConfig({ "data/alg.txt", "data/inp.txt", "data/out.txt" })
+        .setStrategy(MarkovAlgoSimulator::AlgorithmStrategy::LIST_MARKOV_ALGO);
 
-    MarkovList ML(input_data);
-    ML.show();
+    auto output = sim.getOutput();
+    std::cout << "Output: " << output << "\n\n";
 
-    RunAlgoritm(ML, Commands, true, false, false);
-    if (SAVE_RES);
-        //WriteToFile(ML.data_char(), OUTPUT_FILENAME);
+    assert(output == sim.writeOutput());
+    std::cout << "\n";
 
-   return 0;
+    auto input_data = utils::read_file("data/inp.txt");
+    output = sim.getOutput(input_data);
+    std::cout << "\n";
+
+    std::cout << "Input: " << input_data << "\n";
+    std::cout << "Output: " << output << "\n";
+
+    return 0;
 }

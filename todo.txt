@@ -1,0 +1,2 @@
+1. Refactor the parsing logic itself;
+2. Add tests;
